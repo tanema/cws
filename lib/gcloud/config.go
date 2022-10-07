@@ -13,7 +13,7 @@ import (
 )
 
 type Config struct {
-	Debug        bool   `json:"debug" env:"CWS_DEBUG"`
+	Debug        bool   `json:"debug,omitempty" env:"CWS_DEBUG"`
 	ExtID        string `json:"extension_id" env:"CWS_EXTENSION_ID"`
 	ID           string `json:"client_id" env:"CWS_CLIENT_ID"`
 	Secret       string `json:"client_secret" env:"CWS_CLIENT_SECRET"`
