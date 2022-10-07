@@ -10,7 +10,7 @@ To see full usage run `cws -h` or `cws [command] -h`. To upload and publish an
 extension you can run:
 
 ```bash
-cws deploy --dir=./extension_src
+cws deploy ./extension_src
 ```
 
 # Config
