@@ -10,17 +10,13 @@ import (
 
 // uploadCmd represents the upload command
 var uploadCmd = &cobra.Command{
-	Use:   "upload",
+	Use:   "upload [dir-path]",
 	Short: "Upload a new package",
-	PreRun: func(cmd *cobra.Command, args []string) {
-		cobra.CheckErr(cmd.MarkFlagDirname("dir"))
-	},
 	Run: func(cmd *cobra.Command, args []string) {
-		dirPath := getString(cmd, "dir")
 		version := getVersion(cmd)
 		term.Println("🚚 Uploading Version: {{. | bold}}", version)
 		client := authenticate(cmd)
-		archivePath := archiveExt(dirPath, version)
+		archivePath := archiveExt(args[0], version)
 		defer os.Remove(archivePath)
 		item, err := upload(client, archivePath)
 		if err != nil {
@@ -37,6 +33,7 @@ var uploadCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(uploadCmd)
+	uploadCmd.Args = cobra.ExactArgs(1)
 }
 
 func upload(client *gcloud.Client, archivePath string) (item gcloud.WebStoreItem, err error) {

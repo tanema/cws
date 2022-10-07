@@ -9,18 +9,13 @@ import (
 )
 
 var createCmd = &cobra.Command{
-	Use:   "create",
+	Use:   "create [dir-path]",
 	Short: "create a new extension by uploading a brand new archive",
-	PreRun: func(cmd *cobra.Command, args []string) {
-		cobra.CheckErr(cmd.MarkFlagDirname("dir"))
-		cobra.CheckErr(cmd.MarkFlagRequired("dir"))
-	},
 	Run: func(cmd *cobra.Command, args []string) {
-		dirPath := getString(cmd, "dir")
 		version := getVersion(cmd)
 		term.Println("🚚 Creating Version: {{. | bold}}", version)
 		client := authenticate(cmd)
-		archivePath := archiveExt(dirPath, version)
+		archivePath := archiveExt(args[0], version)
 		defer os.Remove(archivePath)
 		status, err := create(client, archivePath)
 		if err != nil {
@@ -37,6 +32,7 @@ State: {{.UploadState}}`, status)
 
 func init() {
 	rootCmd.AddCommand(createCmd)
+	createCmd.Args = cobra.ExactArgs(1)
 }
 
 func create(client *gcloud.Client, archivePath string) (status gcloud.WebStoreItem, err error) {

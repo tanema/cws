@@ -9,18 +9,13 @@ import (
 )
 
 var deployCmd = &cobra.Command{
-	Use:   "deploy",
+	Use:   "deploy [dir-path]",
 	Short: "create an archive, upload, and publish it.",
-	PreRun: func(cmd *cobra.Command, args []string) {
-		cobra.CheckErr(cmd.MarkFlagDirname("dir"))
-		cobra.CheckErr(cmd.MarkFlagRequired("dir"))
-	},
 	Run: func(cmd *cobra.Command, args []string) {
-		dirPath := getString(cmd, "dir")
 		version := getVersion(cmd)
 		term.Println("🚚 Deploying Version: {{. | bold}}", version)
 		client := authenticate(cmd)
-		archivePath := archiveExt(dirPath, version)
+		archivePath := archiveExt(args[0], version)
 		defer os.Remove(archivePath)
 		item, err := upload(client, archivePath)
 		if err != nil {
@@ -45,4 +40,5 @@ var deployCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(deployCmd)
+	deployCmd.Args = cobra.ExactArgs(1)
 }
