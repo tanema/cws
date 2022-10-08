@@ -9,21 +9,16 @@ import (
 	"github.com/tanema/cws/lib/term"
 )
 
-type AccessCodeResponse struct {
-	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
-	IDToken      string `json:"id_token"`
-	Expiry       int    `json:"expires_in"`
-	TokenType    string `json:"token_type"`
-	Scope        string `json:"scope"`
-}
-
 var initCmd = &cobra.Command{
 	Use:   "init [client-id] [client-secret]",
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
 		auth := gcloud.NewAuthenticator(args[0], args[1], "https://www.googleapis.com/auth/chromewebstore")
-		term.Println("Please visit {{. | blue}} to start auth", auth.URL())
+		term.Println(`Please visit this url to start oauth flow.
+
+{{. | blue}}
+
+`, auth.URL())
 		var conf *gcloud.Config
 		var err error
 		cobra.CheckErr(term.Spinner("Waiting for response", func() error {
