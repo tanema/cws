@@ -10,6 +10,7 @@ import (
 
 var createCmd = &cobra.Command{
 	Use:   "create [dir-path]",
+	Args:  cobra.ExactArgs(1),
 	Short: "create a new extension by uploading a brand new archive",
 	Run: func(cmd *cobra.Command, args []string) {
 		version := getVersion(cmd)
@@ -32,7 +33,8 @@ State: {{.UploadState}}`, status)
 
 func init() {
 	rootCmd.AddCommand(createCmd)
-	createCmd.Args = cobra.ExactArgs(1)
+	createCmd.Flags().StringP("config", "c", "./chrome_webstore.json", "id of extension to deploy")
+	createCmd.Flags().StringP("version", "v", "", "version to add to the manifest (default: yy.mm.dd.nn)")
 }
 
 func create(client *gcloud.Client, archivePath string) (status gcloud.WebStoreItem, err error) {

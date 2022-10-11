@@ -11,6 +11,7 @@ import (
 // uploadCmd represents the upload command
 var uploadCmd = &cobra.Command{
 	Use:   "upload [dir-path]",
+	Args:  cobra.ExactArgs(1),
 	Short: "Upload a new package",
 	Run: func(cmd *cobra.Command, args []string) {
 		version := getVersion(cmd)
@@ -33,7 +34,8 @@ var uploadCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(uploadCmd)
-	uploadCmd.Args = cobra.ExactArgs(1)
+	uploadCmd.Flags().StringP("config", "c", "./chrome_webstore.json", "id of extension to deploy")
+	uploadCmd.Flags().StringP("version", "v", "", "version to add to the manifest (default: yy.mm.dd.nn)")
 }
 
 func upload(client *gcloud.Client, archivePath string) (item gcloud.WebStoreItem, err error) {

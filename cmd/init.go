@@ -11,6 +11,7 @@ import (
 
 var initCmd = &cobra.Command{
 	Use:   "init [client-id] [client-secret]",
+	Args:  cobra.ExactArgs(2),
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
 		auth := gcloud.NewAuthenticator(args[0], args[1], "https://www.googleapis.com/auth/chromewebstore")
@@ -38,5 +39,4 @@ var initCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(initCmd)
-	initCmd.Args = cobra.ExactArgs(2)
 }
