@@ -60,11 +60,8 @@ func (auth *Authenticator) URL() string {
 func (auth *Authenticator) ListForResponse() (*Config, error) {
 	codeChan := make(chan string)
 	go auth.startAuthServer(codeChan)
-	code := <-codeChan
-	if err := auth.server.Shutdown(context.Background()); err != nil {
-		return nil, err
-	}
-	access, err := auth.exchangeCode(code)
+	defer auth.server.Shutdown(context.Background())
+	access, err := auth.exchangeCode(<-codeChan)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +90,7 @@ func (auth *Authenticator) startAuthServer(codeChan chan string) {
 			w.Write([]byte("Succeeded you can now close this tab\n"))
 		}
 	})
-	if err := auth.server.ListenAndServe(); err != nil {
+	if err := auth.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatal(err)
 	}
 }
