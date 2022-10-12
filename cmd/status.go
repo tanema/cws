@@ -10,7 +10,7 @@ var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "check the publication status of your extension",
 	Run: func(cmd *cobra.Command, args []string) {
-		term.Println(`🕵️  {{"Status" | green}}{{with .Draft.UploadState}} Draft: {{. | bold}}{{end}}{{with .Published.UploadState}} Published: {{. | bold}}{{end}}`, status(authenticate(cmd)))
+		term.Println(`🕵️  {{"Status" | green}}{{with .Draft.CRXVersion}} Draft Version: {{. | bold}}{{end}}{{with .Published.CRXVersion}} Published Version: {{. | bold}}{{end}}`, status(authenticate(cmd)))
 	},
 }
 
