@@ -3,6 +3,7 @@ module github.com/tanema/cws
 go 1.18
 
 require (
+	github.com/akyoto/tty v0.1.4
 	github.com/imdario/mergo v0.3.13
 	github.com/sethvargo/go-envconfig v0.8.2
 	github.com/spf13/cobra v1.5.0

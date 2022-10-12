@@ -5,7 +5,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/akyoto/tty"
 	"github.com/spf13/cobra"
+
 	"github.com/tanema/cws/lib/gcloud"
 	"github.com/tanema/cws/lib/term"
 )
@@ -56,4 +58,18 @@ func getString(cmd *cobra.Command, key string) string {
 	value, err := cmd.Flags().GetString(key)
 	cobra.CheckErr(err)
 	return value
+}
+
+func spinner(message string, fn func() error) error {
+	if tty.IsTerminal(os.Stdout.Fd()) {
+		return term.Spinner(message, fn)
+	}
+	fmt.Printf("🔄: %v", message)
+	err := fn()
+	if err != nil {
+		fmt.Printf("🔥: %v", message)
+	} else {
+		fmt.Printf("✅: %v", message)
+	}
+	return err
 }
