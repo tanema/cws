@@ -51,6 +51,9 @@ func Zip(dir, version string) (string, error) {
 }
 
 func getFile(path, version string) (io.ReadCloser, error) {
+	if filepath.Base(path) != "manifest.json" {
+		return os.Open(path)
+	}
 	manifestBytes, err := manifest.UpdateBytes(path, version)
 	return io.NopCloser(bytes.NewBuffer(manifestBytes)), err
 }
