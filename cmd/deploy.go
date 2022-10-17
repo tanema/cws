@@ -14,6 +14,7 @@ var deployCmd = &cobra.Command{
 	Short: "create an archive, upload, and publish it.",
 	Run: func(cmd *cobra.Command, args []string) {
 		version := getVersion(cmd)
+		public, _ := cmd.Flags().GetBool("public")
 		term.Println("🚚 Deploying Version: {{. | bold}}", version)
 		client := authenticate(cmd)
 		archivePath := archiveExt(args[0], version)
@@ -23,7 +24,7 @@ var deployCmd = &cobra.Command{
 			term.Println(`{{. | bold}}`, err)
 			return
 		}
-		status, err := publish(client, false)
+		status, err := publish(client, public)
 		if err != nil {
 			term.Println(`{{. | bold}}`, err)
 			return
@@ -43,4 +44,5 @@ func init() {
 	rootCmd.AddCommand(deployCmd)
 	deployCmd.Flags().StringP("config", "c", "./chrome_webstore.json", "id of extension to deploy")
 	deployCmd.Flags().StringP("version", "v", "", "version to add to the manifest (default: yy.mm.dd.nn)")
+	deployCmd.Flags().BoolP("public", "p", false, "Deploy to public, otherwise default to trustedTesters")
 }

@@ -128,13 +128,13 @@ func (client *Client) UploadExtension(archivePath string) (WebStoreItem, error) 
 	return resp, nil
 }
 
-func (client *Client) PublishExtension(test bool) (WebStoreItem, error) {
+func (client *Client) PublishExtension(public bool) (WebStoreItem, error) {
 	resp := WebStoreItem{}
-	target := "default"
-	if test {
-		target = "trustedTesters"
+	target := "trustedTesters"
+	if public {
+		target = "default"
 	}
-	url := "https://www.googleapis.com/chromewebstore/v1.1/items/" + client.Config.ExtID + "/publish?target=" + target
+	url := "https://www.googleapis.com/chromewebstore/v1.1/items/" + client.Config.ExtID + "/publish?publishTarget=" + target
 	if err := client.doRequest(http.MethodPost, url, nil, &resp); err != nil {
 		return resp, err
 	}
