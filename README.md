@@ -41,6 +41,11 @@ To see how to obtain these values, please look at the [Authentication Setup](#Au
 }
 ```
 
+# Screen Shot
+`cws` has helpful error output and actions to help complete a process.
+
+![Screen Shot 2022-10-11 at 10 54 21 AM](https://user-images.githubusercontent.com/463193/195125995-5975f5b6-3572-43f8-aa8d-4c1f3810b534.png)
+
 # Authentication Setup
 To have authentication to the API that we need, we need a already authorized OAuth
 client, with offline access so that we can get a single refresh token that will not
