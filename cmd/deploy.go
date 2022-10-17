@@ -22,7 +22,7 @@ var deployCmd = &cobra.Command{
 			term.Println(`{{. | bold}}`, err)
 			return
 		}
-		status, err := publish(client)
+		status, err := publish(client, false)
 		if err != nil {
 			term.Println(`{{. | bold}}`, err)
 			return

@@ -102,7 +102,7 @@ func (client *Client) CreateExtension(archivePath string) (WebStoreItem, error) 
 		return resp, err
 	}
 	defer archive.Close()
-	if err := client.doRequest(http.MethodPost, "https://www.googleapis.com/upload/chromewebstore/v1.1/items", archive, &resp); err != nil {
+	if err := client.doRequest(http.MethodPost, "https://www.googleapis.com/upload/chromewebstore/v1.1/items?uploadType=media", archive, &resp); err != nil {
 		return resp, err
 	}
 	if resp.UploadState != "SUCCESS" {
@@ -118,7 +118,8 @@ func (client *Client) UploadExtension(archivePath string) (WebStoreItem, error) 
 		return resp, err
 	}
 	defer archive.Close()
-	if err := client.doRequest(http.MethodPut, "https://www.googleapis.com/upload/chromewebstore/v1.1/items/"+client.Config.ExtID, archive, &resp); err != nil {
+	url := "https://www.googleapis.com/upload/chromewebstore/v1.1/items/" + client.Config.ExtID + "?uploadType=media"
+	if err := client.doRequest(http.MethodPut, url, archive, &resp); err != nil {
 		return resp, err
 	}
 	if resp.UploadState != "SUCCESS" {
@@ -127,9 +128,14 @@ func (client *Client) UploadExtension(archivePath string) (WebStoreItem, error) 
 	return resp, nil
 }
 
-func (client *Client) PublishExtension() (WebStoreItem, error) {
+func (client *Client) PublishExtension(test bool) (WebStoreItem, error) {
 	resp := WebStoreItem{}
-	if err := client.doRequest(http.MethodPost, "https://www.googleapis.com/chromewebstore/v1.1/items/"+client.Config.ExtID+"/publish", nil, &resp); err != nil {
+	target := "default"
+	if test {
+		target = "trustedTesters"
+	}
+	url := "https://www.googleapis.com/chromewebstore/v1.1/items/" + client.Config.ExtID + "/publish?target=" + target
+	if err := client.doRequest(http.MethodPost, url, nil, &resp); err != nil {
 		return resp, err
 	}
 	if !reflect.DeepEqual(resp.Status, []string{"OK"}) {

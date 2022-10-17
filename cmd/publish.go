@@ -14,7 +14,7 @@ var publishCmd = &cobra.Command{
 	Short: "publish the extension to the chrome webstore",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("🚚 Publishing")
-		status, err := publish(authenticate(cmd))
+		status, err := publish(authenticate(cmd), false)
 		if err != nil {
 			term.Println(`{{. | bold}}`, err)
 			return
@@ -28,9 +28,9 @@ func init() {
 	rootCmd.AddCommand(publishCmd)
 }
 
-func publish(client *gcloud.Client) (status gcloud.WebStoreItem, err error) {
+func publish(client *gcloud.Client, test bool) (status gcloud.WebStoreItem, err error) {
 	term.Spinner("Publishing", func() error {
-		status, err = client.PublishExtension()
+		status, err = client.PublishExtension(test)
 		return err
 	})
 	return
