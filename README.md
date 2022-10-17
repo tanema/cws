@@ -51,11 +51,10 @@ need to write a script to authenticate.
 - Click *+ CREATE CREDENTIALS* at the top of the page and select *OAuth client ID* and create the app with the following settings.
   - Application Type: Web
   - Name: Your App Name
-  - Authorized redirect URIs: https://developers.google.com/oauthplayground
-- Save the *Client ID* and *Client Secret*
-- Run `cws init [client-id] [client-secret]`
+  - Authorized redirect URIs: http://localhost:3333 (cws will start a local server to wait for the response)
+- Use the client id and secret to run `cws init [client-id] [client-secret]`
 - Click on the outputted link and click Authorize APIs.
   - On the next screen choose the account (optional screen) and give the permissions to the app.
-  - You may get a warning that the app is not verified, click advanced and then click proceeed.
+  - You may get a warning that the app is not verified, do not worry, it is referring to your oauth client, click advanced and then click proceeed.
 - Once you close the tab, you should now have a `chrome_webstore.json` file. Fill in the
   extension_id of your extension.
