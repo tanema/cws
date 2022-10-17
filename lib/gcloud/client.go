@@ -60,10 +60,6 @@ type (
 	}
 )
 
-const clientID = "158838333786-r06agg37gdhh7e6el5h7f5u7skattvrl.apps.googleusercontent.com"
-const clientSecret = "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"
-const refreshToken = "1//04llLRJo0zHm5CgYIARAAGAQSNwF-L9IrNCyC0HPFvPBsT80EDB0GgujQ0l7S0UMjtDZCO_AHz5Wkc-BGwwMVUO7svVcSzpqIGJo"
-
 // New creates a new gcloud client
 func New(configPath string) (*Client, error) {
 	config, err := loadConfig(configPath)
