@@ -3,12 +3,11 @@ package archive
 import (
 	"archive/zip"
 	"bytes"
-	"encoding/json"
-	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/tanema/cws/lib/manifest"
 )
 
 // Zip will create a new zip archive file and update the manifest for publishing
@@ -52,25 +51,6 @@ func Zip(dir, version string) (string, error) {
 }
 
 func getFile(path, version string) (io.ReadCloser, error) {
-	if filepath.Base(path) != "manifest.json" {
-		return os.Open(path)
-	}
-
-	manifestBytes, err := ioutil.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("reading manifest: %v", err)
-	}
-	manifest := map[string]interface{}{}
-	if err := json.Unmarshal(manifestBytes, &manifest); err != nil {
-		return nil, fmt.Errorf("error unmarshalling manifest: %v", err)
-	}
-
-	delete(manifest, "key")
-	manifest["version"] = version
-
-	manifestBytes, err = json.MarshalIndent(manifest, "", "  ")
-	if err != nil {
-		return nil, fmt.Errorf("error marshalling updated manifest: %v", err)
-	}
-	return io.NopCloser(bytes.NewBuffer(manifestBytes)), nil
+	manifestBytes, err := manifest.UpdateBytes(path, version)
+	return io.NopCloser(bytes.NewBuffer(manifestBytes)), err
 }
