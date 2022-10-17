@@ -26,6 +26,7 @@ var publishCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(publishCmd)
+	publishCmd.Flags().StringP("config", "c", "./chrome_webstore.json", "id of extension to deploy")
 }
 
 func publish(client *gcloud.Client, test bool) (status gcloud.WebStoreItem, err error) {

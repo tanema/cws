@@ -8,6 +8,7 @@ import (
 
 var archiveCmd = &cobra.Command{
 	Use:   "archive [dir-path]",
+	Args:  cobra.ExactArgs(1),
 	Short: "zip the dist directory, update the manifest version at the same time",
 	Run: func(cmd *cobra.Command, args []string) {
 		version := getVersion(cmd)
@@ -21,7 +22,7 @@ var archiveCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(archiveCmd)
-	archiveCmd.Args = cobra.ExactArgs(1)
+	archiveCmd.Flags().StringP("version", "v", "", "version to add to the manifest (default: yy.mm.dd.nn)")
 }
 
 func archiveExt(dirPath, version string) (archivePath string) {

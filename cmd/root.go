@@ -11,8 +11,18 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "cws",
-	Short: "A tool for managing chrome webstore extensions",
+	Use:     "cws",
+	Version: "0.0.1",
+	Short:   "A tool for managing chrome webstore extensions",
+	Long: `A cli for automating or locally managing and publishing chrome webstore
+extensions. Best used in CI.
+
+Env Vars:
+  CWS_EXTENSION_ID     chrome webstore id of the extension
+  CWS_CLIENT_ID        google oauth client id
+  CWS_CLIENT_SECRET    google oauth client secret
+  CWS_REFRESH_TOKEN    google oauth client refresh token. Run cws init to get this value
+`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -21,11 +31,6 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
-}
-
-func init() {
-	rootCmd.PersistentFlags().StringP("config", "c", "./chrome_webstore.json", "id of extension to deploy")
-	rootCmd.PersistentFlags().StringP("version", "v", "", "version to add to the manifest (default: yy.mm.dd.nn)")
 }
 
 func authenticate(cmd *cobra.Command) *gcloud.Client {

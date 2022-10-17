@@ -10,6 +10,7 @@ import (
 
 var deployCmd = &cobra.Command{
 	Use:   "deploy [dir-path]",
+	Args:  cobra.ExactArgs(1),
 	Short: "create an archive, upload, and publish it.",
 	Run: func(cmd *cobra.Command, args []string) {
 		version := getVersion(cmd)
@@ -40,5 +41,6 @@ var deployCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(deployCmd)
-	deployCmd.Args = cobra.ExactArgs(1)
+	deployCmd.Flags().StringP("config", "c", "./chrome_webstore.json", "id of extension to deploy")
+	deployCmd.Flags().StringP("version", "v", "", "version to add to the manifest (default: yy.mm.dd.nn)")
 }

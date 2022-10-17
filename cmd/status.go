@@ -16,6 +16,7 @@ var statusCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(statusCmd)
+	statusCmd.Flags().StringP("config", "c", "./chrome_webstore.json", "id of extension to deploy")
 }
 
 func status(client *gcloud.Client) (status gcloud.WebStoreItemStatus) {
