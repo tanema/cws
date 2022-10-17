@@ -26,7 +26,6 @@ func Execute() {
 func init() {
 	rootCmd.PersistentFlags().StringP("config", "c", "./chrome_webstore.json", "id of extension to deploy")
 	rootCmd.PersistentFlags().StringP("version", "v", "", "version to add to the manifest (default: yy.mm.dd.nn)")
-	rootCmd.PersistentFlags().StringP("dir", "d", "", "distribution directory")
 }
 
 func authenticate(cmd *cobra.Command) *gcloud.Client {
