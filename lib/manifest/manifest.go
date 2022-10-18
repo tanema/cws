@@ -8,6 +8,9 @@ import (
 )
 
 func parseJSONChangeset(changeset string) (map[string]string, error) {
+	if changeset == "" {
+		return map[string]string{}, nil
+	}
 	set := map[string]string{}
 	for _, change := range strings.Split(changeset, ",") {
 		parts := strings.Split(change, ":")
