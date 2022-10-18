@@ -17,7 +17,7 @@ var uploadCmd = &cobra.Command{
 		version := getVersion(cmd)
 		term.Println("🚚 Uploading Version: {{. | bold}}", version)
 		client := authenticate(cmd)
-		archivePath := archiveExt(args[0], version)
+		archivePath := archiveExt(args[0], version, getString(cmd, "json"))
 		defer os.Remove(archivePath)
 		item, err := upload(client, archivePath)
 		if err != nil {
@@ -36,6 +36,7 @@ func init() {
 	rootCmd.AddCommand(uploadCmd)
 	uploadCmd.Flags().StringP("config", "c", "./chrome_webstore.json", "id of extension to deploy")
 	uploadCmd.Flags().StringP("version", "v", "", "version to add to the manifest (default: yy.mm.dd.nn)")
+	uploadCmd.Flags().StringP("json", "j", "", "json changes to the manifest. Should be formatted by key:value comma separated")
 }
 
 func upload(client *gcloud.Client, archivePath string) (item gcloud.WebStoreItem, err error) {

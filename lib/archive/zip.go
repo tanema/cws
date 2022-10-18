@@ -12,7 +12,7 @@ import (
 
 // Zip will create a new zip archive file and update the manifest for publishing
 // with the new version added and the dev key removed
-func Zip(dir, version string) (string, error) {
+func Zip(dir, version, jsonChangeset string) (string, error) {
 	file, err := os.Create("compiled_extension.zip")
 	if err != nil {
 		return "", err
@@ -40,7 +40,7 @@ func Zip(dir, version string) (string, error) {
 			return err
 		}
 
-		data, err := getFile(path, version)
+		data, err := getFile(path, version, jsonChangeset)
 		if err != nil {
 			return err
 		}
@@ -50,10 +50,10 @@ func Zip(dir, version string) (string, error) {
 	})
 }
 
-func getFile(path, version string) (io.ReadCloser, error) {
+func getFile(path, version, jsonChangeset string) (io.ReadCloser, error) {
 	if filepath.Base(path) != "manifest.json" {
 		return os.Open(path)
 	}
-	manifestBytes, err := manifest.UpdateBytes(path, version)
+	manifestBytes, err := manifest.UpdateBytes(path, version, jsonChangeset)
 	return io.NopCloser(bytes.NewBuffer(manifestBytes)), err
 }
